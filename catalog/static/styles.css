@@ -1,0 +1,21 @@
+.top-menu{
+	background-color: black;
+
+}
+
+.sport{
+	display: inline;
+}
+
+.categories{
+	display: inline;
+}
+
+.items{
+	display: inline;
+	margin-left: 30px;
+}
+
+.categorygroup{
+	display: flex;
+}
