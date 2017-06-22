@@ -2,11 +2,7 @@
 {% block content %}
 {% include "header.html" %}
 
-<a href="{{url_for('newItem', category_id=category.id)}}"><p>Add a New Item</p></a>
-
-<h1>{{category.name}}</h1>
-
-{% for item in items %}
+<a href="{{url_for('showCategory', category_id=category.id)}}"><p>Go Back</p></a>
 
 <div>
 
@@ -19,5 +15,5 @@
 </div>
 
 
-{% endfor %}
+
 {% endblock %}

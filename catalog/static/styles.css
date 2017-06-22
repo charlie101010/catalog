@@ -5,17 +5,39 @@
 
 .sport{
 	display: inline;
+	font-size: 18px;
 }
 
-.categories{
-	display: inline;
-}
+/*.categories{
+	display: inline-block;
+}*/
 
 .items{
-	display: inline;
-	margin-left: 30px;
+	/*display: inline-block;*/
+	margin-left: 40px;
 }
 
-.categorygroup{
-	display: flex;
+.container{
+	background-color: #DCDCDC;
 }
+
+.apptitle{
+	font-size: 22px;
+	text-decoration: bold;
+}
+
+.options{
+	font-size: 12px;
+	display: inline;
+	color: 2A292A;
+}
+
+
+.categorygroup{
+
+	display: inline-flex;
+}
+
+
+
+

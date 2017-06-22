@@ -9,7 +9,7 @@
 	
 
 		<div class="categories">
-		<a href="{{url_for('newCategory')}}"><h5>Add a Category</h5></a>
+
 			<h1>Categories</h1>
 
 			{% for sport in category %}
@@ -18,8 +18,7 @@
 
 				<a href="{{url_for('showCategory', category_id=sport.id)}}"><div class="sport">{{sport.name}}</div></a>
 				<br>
-				<a href="{{url_for('editCategory', category_id=sport.id)}}"><div class="options">Edit</div></a>
-				<a href="{{url_for('deleteCategory', category_id=sport.id)}}"><div class="options">Delete</div></a>
+				
 
 			</div>
 
@@ -33,7 +32,7 @@
 		
 
 		<div class="items">
-		<a href="{{url_for('newCategory')}}"><h5>Add an Item</h5></a>
+		
 
 			<h1>Latest Items</h1>
 

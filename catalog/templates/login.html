@@ -5,6 +5,11 @@
   </script>
 
 <script src="//apis.google.com/js/platform.js?onload=start"> </script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}"><link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 
 <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 
@@ -12,9 +17,10 @@
 </head>
 
 
-<body>  
+<body style="background-color:grey; margin:20%;"> 
 
 
+<h1> Sign In to Add and Edit My Catalog</h1>
 <!-- GOOGLE PLUS SIGN IN-->
 
           
@@ -132,6 +138,9 @@ function signInCallback(authResult) {
         </button>
 <!--END FACEBOOK SIGN IN -->
 
+
+
   </body>
+   
 
   </html>
