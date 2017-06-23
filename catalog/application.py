@@ -274,7 +274,14 @@ def getUserID(email):
     except:
         return None
 
+@app.route('/catalog/<int:item_id>/JSON')
+def showItemJSON(item_id):
+    item = session.query(Item).filter_by(
+       	id=item_id).one()
+    return jsonify(Item=item.serialize)
 
+
+#This is the index page which shows a list of categories and items
 @app.route('/')
 @app.route('/catalog/')
 def showCatalog():
@@ -289,6 +296,7 @@ def showCatalog():
         return render_template('catalog.html', category=category, items=items)
 
 
+#Create a new category.  You must be logged in to create a category.
 @app.route('/catalog/new', methods=['GET', 'POST'])
 def newCategory():
     if 'username' not in login_session:
@@ -304,6 +312,7 @@ def newCategory():
         return render_template('newCategory.html')
 
 
+#Edit a category.  You must be logged in to edit a category.
 @app.route('/catalog/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
     editCategory = session.query(Category).filter_by(id=category_id).one()
@@ -320,7 +329,7 @@ def editCategory(category_id):
     else:
         return render_template('editCategory.html', category=editCategory)
 
-
+#Delete a category.  You must be logged in to delete a category.
 @app.route('/catalog/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     deleteCategory = session.query(Category).filter_by(id=category_id).one()
@@ -337,7 +346,7 @@ def deleteCategory(category_id):
     else:
         return render_template('deleteCategory.html', category=deleteCategory)
 
-
+#Display the items in a category. You must be logged in to edit and delete the items or add new ones.
 @app.route('/catalog/<int:category_id>')
 def showCategory(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
@@ -348,7 +357,7 @@ def showCategory(category_id):
     else:
         return render_template('showcategory.html', category=category, items=items)
 
-
+#View details about a specific item.
 @app.route('/catalog/<int:category_id>/<int:item_id>/show')
 def showItem(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
@@ -358,7 +367,7 @@ def showItem(category_id, item_id):
     else:
         return render_template('showitem.html', category=category, item=showItem)
 
-
+#Edit an item.  You must be logged in to edit an item.
 @app.route('/catalog/<int:category_id>/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
@@ -369,11 +378,11 @@ def editItem(category_id, item_id):
     if editedItem.user_id != login_session['user_id']:
         return "<script>function myFunction(){alert('You are not authorized to edit this item. Please create your own item in order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
-    	if request.form['name'] and editedItem.name != request.form['name']:
-    		editedItem.name = request.form['name']
-    	if request.form['description'] and editedItem.description != request.form['description']:
-    		editedItem.description = request.form['description']
-    	editedItem.category_id=request.form['catoptions']
+        if request.form['name'] and editedItem.name != request.form['name']:
+            editedItem.name = request.form['name']
+        if request.form['description'] and editedItem.description != request.form['description']:
+            editedItem.description = request.form['description']
+        editedItem.category_id = request.form['catoptions']
         session.add(editedItem)
         session.commit()
         flash("item edited!")
@@ -381,7 +390,7 @@ def editItem(category_id, item_id):
     else:
         return render_template('editItem.html', category=category, categories=categories, item=editedItem)
 
-
+#Delete an item.  You must be logged in to delete an item.
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete', methods=['GET', 'POST'])
 def deleteItem(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
@@ -398,7 +407,7 @@ def deleteItem(category_id, item_id):
     else:
         return render_template('deleteItem.html', category=category, item=deleteItem)
 
-
+#Create a new item.  You must be logged in to create an item.
 @app.route('/catalog/<int:category_id>/new', methods=['GET', 'POST'])
 def newItem(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
