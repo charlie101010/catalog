@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc, desc, DateTime
 from sqlalchemy.orm import sessionmaker
-from catalogdbsetupwithtime2 import Base, User, Category, Item
+from catalogdbsetupwithdescript2 import Base, User, Category, Item
 
 from flask import session as login_session
 import random
@@ -19,7 +19,7 @@ CLIENT_ID = json.loads(
     open('catalog/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
 
-engine = create_engine('sqlite:///catalogdbsetupwithtime2.db')
+engine = create_engine('sqlite:///catalogdbsetupwithdescript2.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -295,7 +295,7 @@ def newCategory():
         return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(
-            name.form['name'], user_id=login_session['user_id'])
+            name=request.form['name'], user_id=login_session['user_id'])
         session.add(newCategory)
         session.commit()
         flash("new category created")
@@ -362,19 +362,24 @@ def showItem(category_id, item_id):
 @app.route('/catalog/<int:category_id>/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
+    categories = session.query(Category).all()
     editedItem = session.query(Item).filter_by(id=item_id).one()
     if 'username' not in login_session:
         return redirect('/login')
     if editedItem.user_id != login_session['user_id']:
         return "<script>function myFunction(){alert('You are not authorized to edit this item. Please create your own item in order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
-        editedItem.name = request.form['name']
+    	if request.form['name'] and editedItem.name != request.form['name']:
+    		editedItem.name = request.form['name']
+    	if request.form['description'] and editedItem.description != request.form['description']:
+    		editedItem.description = request.form['description']
+    	editedItem.category_id=request.form['catoptions']
         session.add(editedItem)
         session.commit()
         flash("item edited!")
         return redirect(url_for('showCategory', category_id=category.id))
     else:
-        return render_template('editItem.html', category=category, item=editedItem)
+        return render_template('editItem.html', category=category, categories=categories, item=editedItem)
 
 
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete', methods=['GET', 'POST'])
@@ -397,11 +402,12 @@ def deleteItem(category_id, item_id):
 @app.route('/catalog/<int:category_id>/new', methods=['GET', 'POST'])
 def newItem(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
+    categories = session.query(Category).all()
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
         newItem = Item(name=request.form['name'], user_id=login_session[
-                       'user_id'], category_id=category.id)
+                       'user_id'], category_id=request.form['catoptions'], description=request.form['description'])
         session.add(newItem)
         print newItem.created
         session.commit()
@@ -409,7 +415,7 @@ def newItem(category_id):
         flash("new item created!")
         return redirect(url_for('showCategory', category_id=category.id))
     else:
-        return render_template('newitem.html', category=category)
+        return render_template('newitem.html', category=category, categories=categories)
 
 
 if __name__ == '__main__':

@@ -33,7 +33,7 @@
 		
 
 		<div class="items">
-		<a href="{{url_for('newCategory')}}"><h5>Add an Item</h5></a>
+		<a href="{{url_for('newItem', category_id=1)}}"><h5>Add an Item</h5></a>
 
 			<h1>Latest Items</h1>
 
@@ -41,7 +41,6 @@
 
 
 			<div>
-
 
 					<a href="{{url_for('showItem', item_id=item.id, category_id=item.category_id)}}"><div class="sport">{{item.name}} ({{item.category.name}})</div></a>
 

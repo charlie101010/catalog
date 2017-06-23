@@ -35,7 +35,8 @@ class Item(Base):
 
     name =Column(String(80), nullable = False)
     id = Column(Integer, primary_key = True)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    description = Column(String(250), nullable=False)
+    created = Column(DateTime, nullable=False, server_default=func.now()) 
     category_id = Column(Integer,ForeignKey('category.id'))
     category = relationship(Category)
     user_id=Column(Integer, ForeignKey('user.id'))
@@ -49,13 +50,14 @@ class Item(Base):
            'name'         : self.name,
            'category' : self.category_id,
            'id'         : self.id,
+           'description': self. description,
        }
 
 
 
 
 
-engine = create_engine('sqlite:///catalogdbsetupwithtime.db')
+engine = create_engine('sqlite:///catalogdbsetupwithdescript1.db')
  
 
 Base.metadata.create_all(engine)

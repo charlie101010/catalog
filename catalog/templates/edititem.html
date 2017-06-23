@@ -1,5 +1,8 @@
 {% extends "main.html" %}
 {% block content %}
+{% include "header.html" %}
+
+<a href="{{url_for('showCategory', category_id=category.id)}}"><p>Go Back</p></a>
 
 
 <h1>Edit Item</h1>
@@ -8,6 +11,20 @@
 
 <p>Name:</p>
 	<input type='text' size='30' name='name' placeholder='{{item.name}}'>
+
+<p>Description:</p>
+	<input type='text' size='100' name='description' placeholder='{{item.description}}'>
+
+<br/>
+
+<select name="catoptions">
+	<option value="{{category.id}}">{{category.name}}</option>
+	{% for cat in categories %}
+		{% if cat.name != category.name %}
+		  <option value="{{cat.id}}">{{cat.name}}</option>		
+		 {%endif%}
+ 	{% endfor %}
+</select>
 
 <input type='submit' value='Edit'>
 
